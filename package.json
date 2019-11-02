@@ -1,0 +1,22 @@
+{
+  "name": "far-trek",
+  "version": "1.0.0",
+  "description": "Elevation Based Navigation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rob-Kilgore/Far-Trek.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rob-Kilgore/Far-Trek/issues"
+  },
+  "homepage": "https://github.com/Rob-Kilgore/Far-Trek#readme",
+  "dependencies": {
+    "http-server": "^0.11.1"
+  }
+}
