@@ -1,5 +1,8 @@
+  
 const http = require('http');
 const fs = require('fs');
+const pathAlgorithm = require('./js/PathAlgorithm');
+const graph = require('./js/BasicGraph');
 
 const hostname = '127.0.0.1';
 const port = 8080;
@@ -19,3 +22,7 @@ fs.readFile('webdir//index.html', (error, html) => {
           console.log('server started on port ' + port);
      });
 });
+// Testing
+console.log(graph);
+var node = pathAlgorithm.getPath(graph, 1, 9, 0);
+console.log("path is " + node.path + " with distance " + node.h);
