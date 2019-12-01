@@ -24,5 +24,5 @@ fs.readFile('webdir//index.html', (error, html) => {
 });
 // Testing
 console.log(graph);
-var node = pathAlgorithm.getPath(graph, 1, 9, 0);
+var node = pathAlgorithm.getPath(graph, 1, 5, 0);
 console.log("path is " + node.path + " with distance " + node.h);

@@ -3,14 +3,16 @@ function getAdjacent(graph, node) {
      graph.edges.forEach((edge, i) => {
           // If either end is this node
           if(edge.a === node.uuid) {
-               if(!node.path.includes("," + edge.b + ",")) {
-                    var n = {uuid: edge.b, path:edge.b, h:0};
+               if(!node.path.includes(edge.b)) {
+                    var n = {uuid: edge.b, path:node.path.slice(0), h:0};
+                    n.path.push(edge.b);
                     adjacent.push(n);
                }
           }
           else if (edge.b === node.uuid) {
-               if(!node.path.includes("," + edge.a + ",")) {
-                    var n = {uuid: edge.a, path:edge.a, h:0};
+               if(!node.path.includes(edge.a)) {
+                    var n = {uuid: edge.a, path:node.path.slice(0), h:0};
+                    n.path.push(edge.a);
                     adjacent.push(n);
                }
           }
@@ -18,15 +20,15 @@ function getAdjacent(graph, node) {
      return adjacent;
 }
 
-function getHeuristic(graph, weight, totalSlope, currId, nextId)
+function getHeuristic(graph, weight, currId, nextId)
 {
      var curr = graph.nodes.find(function(el) { return el.uuid === currId });
      var next = graph.nodes.find(function(el) { return el.uuid === nextId });
      var across = Math.sqrt(Math.pow((curr.lat - next.lat), 2) + Math.pow((curr.lon - next.lon), 2));
-     var ele = Math.abs(((next.ele - curr.ele) / across) - totalSlope);
+     var eleChange = Math.abs(next.ele - curr.ele);
+     var ele = ((eleChange * eleChange) / across);
+     
      // Weigh elevation change by actual distance between 2 points so that a small really steep section does not increase heuristic un-proportionately
-     var totalDistance = Math.sqrt(Math.pow(across, 2) + Math.pow(next.ele - curr.ele, 2));
-     ele = ele * totalDistance;
      return ((1- weight) * across) + (weight * ele);
 }
 
@@ -42,9 +44,7 @@ module.exports = {
           {
                throw "End node does not exist";
           }
-          var distance = Math.sqrt(Math.pow((startNode.lat - endNode.lat), 2) + Math.pow((startNode.lon - endNode.lon), 2));
-          var totalSlope = (endNode.ele - startNode.ele) / distance;
-          var firstNode = {uuid: start, path: "," + start, h:0};
+          var firstNode = {uuid: start, path: [start], h:0};
           var open = [firstNode];
           var closed = [];
           
@@ -67,8 +67,7 @@ module.exports = {
                for(var i = 0; i < neighbors.length; i++)
                {
                     var neighbor = neighbors[i];
-                    neighbor.path = current.path + "," + neighbor.path;
-                    neighbor.h = current.h + getHeuristic(graph, weight, totalSlope, current.uuid, neighbor.uuid);
+                    neighbor.h = current.h + getHeuristic(graph, weight, current.uuid, neighbor.uuid);
 
                     // if open list contains this node with lower h
                     if(open.find(function(el) { return el.uuid === neighbor.uuid && el.h <= neighbor.h}))
@@ -79,8 +78,8 @@ module.exports = {
                     // if closed list contains this node with lower h
                     if(closed.find(function(el) { return el === neighbor.uuid && el.h <= neighbor.h }))
                     {
-                    // skip this element
-                    continue;
+                         // skip this element
+                         continue;
                     }
                     open.push(neighbor);
                }
