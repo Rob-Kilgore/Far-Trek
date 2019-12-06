@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Rob-Kilgore/Far-Trek#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "http-server": "^0.11.1"
   }
 }

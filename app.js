@@ -1,27 +1,15 @@
-  
-const http = require('http');
-const fs = require('fs');
 const pathAlgorithm = require('./js/PathAlgorithm');
 const graphJSON = require('./js/BasicGraph');
 const convertGraph = require('./js/ConvertGraph');
 
-const hostname = '127.0.0.1';
-const port = 8080;
+const express = require('express');
 
-fs.readFile('webdir//index.html', (error, html) => {
-     if(error) {
-          throw error;
-     }
-     const server = http.createServer((req, res) => {
-          res.statusCode = 200;
-          res.setHeader('Content-type', 'text/html');
-          res.write(html);
-          res.end();
-     });
-     
-     server.listen(port, hostname, () => {
-          console.log('server started on port ' + port);
-     });
+const app = express();
+app.use(express.static("webdir"));
+const PORT = process.env.PORT || 8080
+
+app.listen(PORT, () => {
+  console.log('Server is running on PORT:',PORT);
 });
 // Testing
 //console.log(graph);
