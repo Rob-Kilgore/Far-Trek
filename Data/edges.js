@@ -15,38 +15,52 @@ parseString(xml, function (err, result) {
 });
 
 //Will be an array that contains all the ways, ways are represented as arrays
-let wayList = new Array(parsedFile.way.length);
+
+let wayList = {}
 
 
-for(let i = 0; i < parsedFile.way.length; i++){
+for (let i = 0; i < parsedFile.way.length; i++) {
     //Creates a list of edges for each way in the parsedFile variable
     let edgeList = createEdgeList(parsedFile.way[i]);
 
     // WayList are arrays of arrays
     // Each element/array in the wayList array represents 1 way
     // And each array/way contains all the edges for that 1 way
-    wayList[i] = edgeList;
+    // wayList[i] = edgeList;
+
+    wayList["way " + i.toString()] = edgeList
 }
 
 
-function createEdgeList(way){
+function createEdgeList(way) {
     let nodeList = way.nd;
 
-    let edgeList = new Array(nodeList.length-1)
+    // let edgeList = new Array(nodeList.length-1)
 
-    for (let i = 0; i < nodeList.length-1; i++){
+    let edgeList = [];
+
+    for (let i = 0; i < nodeList.length - 1; i++) {
         let id1 = nodeList[i].$.ref;
-        let id2 = nodeList[i+1].$.ref;
+        let id2 = nodeList[i + 1].$.ref;
 
-        let edge = {"edge Order": i, "edge ID": id1+id2, "id1": id1, "id2":id2, }
+        let edge = {"edge ID": id1 + id2, "id1": id1, "id2": id2,}
 
-        edgeList[i] = edge;
+        edgeList[i] = edge
+
+        //edgeList["edge " + i.toString()] = edge;
     }
     return edgeList
 }
 
+
 //Stores the wayList which contains objects and thus cannot be stored in its original format as a JSON file
-fs.writeFileSync('./data.json', util.inspect(wayList), 'utf-8');
+// fs.writeFileSync('./data.json', JSON.stringify(wayList), 'utf-8');
+
+fs.writeFileSync('./data.json', JSON.stringify(wayList), 'utf-8');
+
+
+
+
 
 
 
