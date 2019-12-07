@@ -1,5 +1,8 @@
 module.exports = {
 	getPath: function(startPosition, endPosition, weight){
+		console.log(startPosition, endPosition, weight);
+		
+		//TEMP
 		return [
 			[-72.542037, 42.373558],
 			[-72.540679, 42.384198],
