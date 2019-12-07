@@ -3,6 +3,9 @@ import ReactMapGL from "react-map-gl";
 import URL from 'url';
 import './App.css';
 import {getPath} from './navigation/Navigate';
+import DeckGL from '@deck.gl/react';
+import {StaticMap} from 'react-map-gl';
+import {PathLayer} from '@deck.gl/layers';
 
 function App() {
 	const [viewport, setViewport] = useState({
@@ -13,6 +16,8 @@ function App() {
 		height: "100vh",		
 	});
 	
+	var lineLayer = null;
+	
 	// Parse URL
 	const queryParams = URL.parse(window.location.href, true).query;
 	const startPosition = queryParams.startPosition;
@@ -21,21 +26,36 @@ function App() {
 	
 	var path = [];
 	if(startPosition && endPosition && weight){
-		path = getPath(startPosition, endPosition, weight/100.0);
-		console.log(path);
+		path = getPath(startPosition, endPosition, weight/100.0);		
 	}
 	
-	
-	
+	const pathLayer = new PathLayer({
+		id: 'path-layer',
+		data: [{path: path}],
+		pickable: true,
+		widthScale: 20,
+		widthMinPixels: 2,
+		getPath: d => d.path,
+		getColor: d => [255, 140, 0],
+		getWidth: d => 1,
+	});
+		
 	return (
 		<div>			
-			<ReactMapGL {...viewport}
-				mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
-				mapStyle="mapbox://styles/fartrekker/ck3ut11zx2cgj1cs4uz06ahu2"
-				onViewportChange={viewport => {
-					setViewport(viewport);
-				}}
-			/>
+			
+			<DeckGL
+				initialViewState={viewport}
+				height="100%"
+				width="100%"
+				controller={true} // allows the user to move the map around
+				layers={[pathLayer]}
+			>
+				<StaticMap
+					mapStyle="mapbox://styles/fartrekker/ck3ut11zx2cgj1cs4uz06ahu2"
+					mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+				/>
+			</DeckGL>
+			
 			<div style={{position: "absolute", top: "0px", left: "0px"}}>
 			<form>				
 				Start Position: <input type="text" name="startPosition" value={startPosition}/>
