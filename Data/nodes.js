@@ -6,7 +6,9 @@ const fetch = require("node-fetch");
 const fs = require('fs');
 var parseString = require('xml2js').parseString;
 var util = require('util');
+
 //put your OSM file here!
+//currently using the small test file for speed 
 var xml = fs.readFileSync('test.osm');
 //
 var parsedFile;
@@ -25,7 +27,7 @@ const googleMapsClient = require('@google/maps').createClient({
   Promise: Promise // 'Promise' is the native constructor.
 });
 
-
+//checks to see if you gave the api key on script call i.e. "node node.js api:(apikey)"
 function extractArgument(arg, argv) {
      var value = null;
      argv.forEach(function(str)
@@ -58,11 +60,18 @@ function create_nodes(file){
 		coordinates.push(obj);
 		idList.push(id);
 	}
-return getElevation(coordinates)
+  results = getElevation(coordinates)
+  //format results here in the correct way to pass to the algorithm({uuid, lat, lon, ele} for each node) add the ID's back into each node here 
+
+
+
+  //
+  return(results)
 }
 
 
-
+//checks the elevation at each coordinate and adds them to an array of nodes 
+//currently broken (Promise { [] } is the only result )
 async function getElevation(coordinates){
   nodes = [] 
   for(i = 0 ; i < coordinates.length; i++){
@@ -77,21 +86,8 @@ async function getElevation(coordinates){
   return(nodes)
   }
 
+
+
+
+// This should log the final data result that is in the format {uuid, lat, lon, ele} for each node 
 console.log(create_nodes(parsedFile))
-
-
-function extractArgument(arg, argv) {
-     var value = null;
-     argv.forEach(function(str)
-     {
-          if(str.substring(0, arg.length + 1) === arg + ":")
-          {
-               value = str.substring(arg.length + 1);
-          }
-     });
-     if(value == null)
-     {
-          throw (arg + " argument not specified. Specify "+ arg + " using " + arg + ":[VALUE]");
-     }
-     return value;
-}
