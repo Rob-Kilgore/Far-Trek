@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import ReactMapGL from "react-map-gl";
-import URL from 'url';
 import './App.css';
 import {getPath} from './navigation/Navigate';
 import DeckGL from '@deck.gl/react';
@@ -18,21 +17,13 @@ function App() {
 		width: "100vw",
 		height: "100vh",		
 	});
+	var [path, setPath] = useState([]);
 	
-	var lineLayer = null;
-	
-	// Parse URL
-	const queryParams = URL.parse(window.location.href, true).query;
-	const startPosition = queryParams.startPosition;
-	const endPosition = queryParams.endPosition;
-	const weight = queryParams.weight;
-	
-	var path = [];
-	if(startPosition && endPosition && weight){
-		path = getPath(startPosition, endPosition, weight/100.0);		
-	}
-	
-	const pathLayer = new PathLayer({
+	var startPosition = "";
+	var endPosition = "";
+	var weight = 0;
+		
+	var pathLayer = new PathLayer({
 		id: 'path-layer',
 		data: [{path: path}],
 		pickable: true,
@@ -41,7 +32,14 @@ function App() {
 		getPath: d => d.path,
 		getColor: d => [255, 140, 0],
 		getWidth: d => 1,
+		rounded: true,		
 	});
+	
+	var updatePathLayer = function(){
+		if(startPosition && endPosition){
+			setPath(getPath(startPosition, endPosition, weight));
+		}		
+	}	
 		
 	return (
 		<div>			
@@ -61,14 +59,26 @@ function App() {
 			
 			<div style={{position: "absolute", top: "0px", left: "0px"}}>
 			<Searchbar />
-			<form>			
-				Start Position: <input type="text" name="startPosition" value={startPosition}/>
+			<form>				
+				Start Position:
+				<input type="text" name="startPosition"
+					onChange={(event) => {startPosition = event.target.value}}
+				/>
 				<br />
-				End Position: <input type="text" name="endPosition" value={endPosition}/>
+				End Position:
+				<input type="text" name="endPosition"
+					onChange={(event) => {endPosition = event.target.value}}
+				/>
 				<br />
-				Weight: <input type="range" name="weight" min="0" max="100" step="1" value={weight}/>
+				Weight:
+				<input type="range" name="weight"
+					min="0" max="100" step="1"
+					onChange={(event) => {weight = event.target.value/100.0}}
+				/>
 				<br />
-				<input type="submit" value="Calculate Path" />
+				<input type="button" value="Calculate Path"
+					onClick={updatePathLayer}
+				/>
 			</form>
 			
 			</div>
