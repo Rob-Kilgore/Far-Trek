@@ -3,7 +3,7 @@ function getAdjacent(node) {
      for(var i = 0; i < node.obj.neighbors.length; i++) {
           var neighbor = node.obj.neighbors[i];
           var n = {obj: neighbor, path: node.path.slice(0), h:0, f:0};
-          n.path.push({uuid: neighbor.uuid, lat: neighbor.lat, lon: neighbor.lon});
+          n.path.push({uuid: neighbor.uuid, lat: neighbor.lat, lon: neighbor.lon, ele: neighbor.ele});
           adjacent.push(n);
      }
      return adjacent;
@@ -47,7 +47,7 @@ module.exports = {
           {
                throw "End node does not exist";
           }
-          var firstNode = {obj: startNode, path: [{uuid: start, lat: startNode.lat, lon: startNode.lon}], h:0, f:0};
+          var firstNode = {obj: startNode, path: [{uuid: start, lat: startNode.lat, lon: startNode.lon, ele: startNode.ele}], h:0, f:0};
           var open = [firstNode];
           var closed = [];
           
