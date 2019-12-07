@@ -15,4 +15,9 @@ app.listen(PORT, () => {
 //console.log(graph);
 var graph = convertGraph.convertGraph(graphJSON);
 var node = pathAlgorithm.getPath(graph, 1, 5, 0);
-console.log("path is " + node.path + " with distance " + node.h);
+console.log("path is ");
+for(var i = 0; i < node.path.length; i++)
+{
+     console.log(node.path[i]);
+}
+console.log("with f " + node.h);

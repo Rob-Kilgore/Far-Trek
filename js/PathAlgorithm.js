@@ -1,34 +1,17 @@
 function getAdjacent(node) {
      var adjacent = [];
      for(var i = 0; i < node.obj.neighbors.length; i++) {
-          var n = {obj: node.obj.neighbors[i], path:node.path.slice(0), h:0, f:0};
-          n.path.push(node.obj.neighbors[i].uuid);
+          var neighbor = node.obj.neighbors[i];
+          var n = {obj: neighbor, path: node.path.slice(0), h:0, f:0};
+          n.path.push({uuid: neighbor.uuid, lat: neighbor.lat, lon: neighbor.lon});
           adjacent.push(n);
      }
-     /*graph.edges.forEach((edge, i) => {
-          // If either end is this node
-          if(edge.a === node.uuid) {
-               if(!node.path.includes(edge.b)) {
-                    var n = {uuid: edge.b, path:node.path.slice(0), h:0};
-                    n.path.push(edge.b);
-                    adjacent.push(n);
-               }
-          }
-          else if (edge.b === node.uuid) {
-               if(!node.path.includes(edge.a)) {
-                    var n = {uuid: edge.a, path:node.path.slice(0), h:0};
-                    n.path.push(edge.a);
-                    adjacent.push(n);
-               }
-          }
-     });*/
      return adjacent;
 }
 
-function getHeuristic(graph, weight, curr, next)
+function getHeuristic(weight, curr, next)
 {
-     //var curr = graph.nodes.find(function(el) { return el.uuid === currId });
-     //var next = graph.nodes.find(function(el) { return el.uuid === nextId });
+     //console.log(curr);
      var across = Math.sqrt(Math.pow((curr.obj.lat - next.obj.lat), 2) + Math.pow((curr.obj.lon - next.obj.lon), 2));
      var eleChange = Math.abs(next.obj.ele - curr.obj.ele);
      var ele = ((eleChange * eleChange) / across);
@@ -45,6 +28,10 @@ function getDistanceToGoal(curr, goal, weight) {
      {
           ele = 0;
      }
+     // so that edges without elevation change are not free when only weighing elevation
+     if(eleChange == 0) {
+          ele = 1;
+     }
      return ((1- weight) * across) + (weight * ele);
 }
 
@@ -60,7 +47,7 @@ module.exports = {
           {
                throw "End node does not exist";
           }
-          var firstNode = {obj: startNode, path: [start], h:0, f:0};
+          var firstNode = {obj: startNode, path: [{uuid: start, lat: startNode.lat, lon: startNode.lon}], h:0, f:0};
           var open = [firstNode];
           var closed = [];
           
@@ -84,7 +71,7 @@ module.exports = {
                for(var i = 0; i < neighbors.length; i++)
                {
                     var neighbor = neighbors[i];
-                    neighbor.h = current.h + getHeuristic(graph, weight, current, neighbor);
+                    neighbor.h = current.h + getHeuristic(weight, current, neighbor);
                     neighbor.f = neighbor.h + getDistanceToGoal(neighbor.obj, endNode, weight);
                     // if open list contains this node with lower h
                     if(open.find(function(el) { return el.obj.uuid === neighbor.obj.uuid && el.h <= neighbor.h}))
