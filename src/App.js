@@ -7,6 +7,9 @@ import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {PathLayer} from '@deck.gl/layers';
 
+// Components
+import Searchbar from './components/searchbar/Searchbar';
+
 function App() {
 	const [viewport, setViewport] = useState({
 		latitude: 42.391484,
@@ -57,7 +60,8 @@ function App() {
 			</DeckGL>
 			
 			<div style={{position: "absolute", top: "0px", left: "0px"}}>
-			<form>				
+			<Searchbar />
+			<form>			
 				Start Position: <input type="text" name="startPosition" value={startPosition}/>
 				<br />
 				End Position: <input type="text" name="endPosition" value={endPosition}/>
