@@ -1,5 +1,11 @@
-//lines to run before beginning:
-//npm i node-fetch --save
+// resources to learn about stuff here: 
+/*
+https://github.com/googlemaps/google-maps-services-js
+https://googlemaps.github.io/google-maps-services-js/docs/
+https://googlemaps.github.io/google-maps-services-js/docs/GoogleMapsClient.html
+https://googlemaps.github.io/google-maps-services-js/docs/ResponseCallback.html
+https://developers.google.com/maps/documentation/elevation/intro
+*/ 
 // google api key found on slack #data
 
 const fetch = require("node-fetch");
@@ -22,9 +28,11 @@ var APIKey = extractArgument("api", process.argv);
 var nodeList = []
 var idList = []
 
+
+//took out promise - if you use the .asPromise() method in getElevation you need to uncomment it but otherwise it's ok 
 const googleMapsClient = require('@google/maps').createClient({
   key: APIKey,
-  Promise: Promise // 'Promise' is the native constructor.
+  //Promise: Promise
 });
 
 //checks to see if you gave the api key on script call i.e. "node node.js api:(apikey)"
@@ -46,7 +54,7 @@ function extractArgument(arg, argv) {
 
 
 // creates a list of coordinates and an id list, then passes the coordinates to the google api to get elevation data. 
-function create_nodes(file){
+async function create_nodes(file){
 	coordinates = []
   idList = []
 	for(i = 0 ; i < file.node.length; i++){
@@ -60,34 +68,71 @@ function create_nodes(file){
 		coordinates.push(obj);
 		idList.push(id);
 	}
-  results = getElevation(coordinates)
-  //format results here in the correct way to pass to the algorithm({uuid, lat, lon, ele} for each node) add the ID's back into each node here 
 
-
-
+  // test coordinates to reduce number of calls. Use when testing findElevation
+  coordinates = [{ lat: '42.4288550', lng: '-72.5301110' }]
   //
-  return(results)
+
+  // once this is working on a single coordinate, the below needs to be put in a loop that goes over all of coordinates instead of the above test coordinates 
+
+  node = [];
+
+  try{ findElevation(coordinates).then(function(response){
+    console.log('then print: ' + response);
+    node =  response;
+  });
+  } catch (e){
+    console.log('e: ' + e);
+  }
+
+  console.log("node print  " + node);
+
+  //format results here in the correct way to pass to the algorithm({uuid, lat, lon, ele} for each node) add the ID's back into each node here from idList 
+
+  finalData =[]
+  finalData = node
+
+  return(finalData)
 }
 
 
-//checks the elevation at each coordinate and adds them to an array of nodes 
-//currently broken (Promise { [] } is the only result )
-async function getElevation(coordinates){
-  nodes = [] 
-  for(i = 0 ; i < coordinates.length; i++){
-    googleMapsClient.elevation({locations: coordinates[i]}).asPromise()
-      .then(function(response) {
-        nodes.push(response.json.results);
-      })
-      .catch((err) => {
-      console.log(err);
-      });
+//this should take one set of coordinates "{ lat: 'x', lng: 'y' }" and return response.json.results which will look like 
+/*
+[ { elevation: 93.7344970703125,
+    location: { lat: 42.428855, lng: -72.530111 },
+    resolution: 4.771975994110107 } ]
+*/ 
+// we only need the elevation data from here - it should be processed above in create_nodes 
+async function findElevation(coordinates){
+const data = {locations: coordinates};
+results = 'invalid';
+await googleMapsClient.elevation(data, function(err, response) {
+    if (!err) {
+      console.log(response.json.results);
+     return response.json.results;
+    } else if (err === 'timeout') {
+      // Handle timeout.
+      console.log('timeout');
+    } else if (err.json) {
+      // Inspect err.status for more info.
+      console.log('error: '+ err.json);
+    } else {
+      // Handle network error.
+      console.log('unexpected error (network)');
     }
-  return(nodes)
-  }
+  })/*.asPromise()
+  .then((response) => {
+    
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+resolve(result){
+  return result;
+}*/
 
+//promise implementation ^ replaced with 
+}
 
-
-
-// This should log the final data result that is in the format {uuid, lat, lon, ele} for each node 
-console.log(create_nodes(parsedFile))
+//this should return the final nodes list in the format [{uuid, lat, lon, ele}, {uuid, lat, lon, ele}, {uuid, lat, lon, ele}....]
+create_nodes(parsedFile)
