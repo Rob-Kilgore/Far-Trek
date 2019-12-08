@@ -10,7 +10,7 @@ class Searchbar extends React.Component {
               <input class={style.searchbar} type="text" name="searchbar" placeholder="search for a destination..." maxlength="100"/>
               <button class={style.searchbar} type="submit"><img src={search_icon} /></button>
             </form>
-          </div
+          </div>
       );
     }
   }
