@@ -7,6 +7,8 @@ import {StaticMap} from 'react-map-gl';
 import {PathLayer} from '@deck.gl/layers';
 import { render } from '@testing-library/react';
 
+import Searchbar from '../../search/Searchbar';
+
 function RenderMap() {
 
 	const [viewport, setViewport] = useState({
@@ -43,7 +45,7 @@ function RenderMap() {
 
 	return (
 		<div className="RenderMap">			
-			
+			<Searchbar />
 			<DeckGL
 				initialViewState={viewport}
 				height="100%"
@@ -56,31 +58,6 @@ function RenderMap() {
 					mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
 				/>
 			</DeckGL>
-			
-			<div style={{position: "absolute", top: "0px", left: "0px"}}>
-			<form>				
-				Start Position:
-				<input type="text" name="startPosition"
-					onChange={(event) => {startPosition = event.target.value}}
-				/>
-				<br />
-				End Position:
-				<input type="text" name="endPosition"
-					onChange={(event) => {endPosition = event.target.value}}
-				/>
-				<br />
-				Weight:
-				<input type="range" name="weight"
-					min="0" max="100" step="1"
-					onChange={(event) => {weight = event.target.value/100.0}}
-				/>
-				<br />
-				<input type="button" value="Calculate Path"
-					onClick={updatePathLayer}
-				/>
-			</form>
-			
-			</div>
 		</div>
 	);
 }
