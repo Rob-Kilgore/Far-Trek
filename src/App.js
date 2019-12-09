@@ -6,7 +6,7 @@ import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {PathLayer} from '@deck.gl/layers';
 
-function App() {
+function App() {	
 	const [viewport, setViewport] = useState({
 		latitude: 42.391484,
 		longitude: -72.529089,
@@ -34,7 +34,12 @@ function App() {
 	
 	var updatePathLayer = function(){
 		if(startPosition && endPosition){
-			setPath(getPath(startPosition, endPosition, weight));
+			var coordinatePath = [];
+			var nodePath = getPath(startPosition, endPosition, weight);
+			nodePath.forEach(node => {
+				coordinatePath.push([node.lon, node.lat])
+			});
+			setPath(coordinatePath);
 		}		
 	}	
 		
@@ -47,6 +52,10 @@ function App() {
 				width="100%"
 				controller={true} // allows the user to move the map around
 				layers={[pathLayer]}
+				//onClick={(event) => {
+				//	const pickInfo = deck.pickObject({x: event.clientX, y: event.clientY});
+				//	console.log(pickInfo.coordinate);
+				//}}
 			>
 				<StaticMap
 					mapStyle="mapbox://styles/fartrekker/ck3ut11zx2cgj1cs4uz06ahu2"
