@@ -2,10 +2,16 @@ const fs = require('fs');
 var util = require('util');
 let parseString = require('xml2js').parseString;
 
+
+
+
 //.osm files are xml files containing open street map data
 //To play around with this, place your osm file in the same directory
 //As this source file
-let xml = fs.readFileSync('NorthAmherst.osm');
+let xml = fs.readFileSync('campus.osm');
+
+
+
 
 //Uses a npm module and parses the xml file to JSON object and
 //stores the local variable into the variable "parsedFile"
@@ -56,7 +62,7 @@ function createEdgeList(way) {
 //Stores the wayList which contains objects and thus cannot be stored in its original format as a JSON file
 // fs.writeFileSync('./data.json', JSON.stringify(wayList), 'utf-8');
 
-fs.writeFileSync('./data.json', JSON.stringify(wayList), 'utf-8');
+fs.writeFileSync('./data.json', '['+JSON.stringify(wayList)+']', 'utf-8');
 
 
 
