@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
 import ReactMapGL from "react-map-gl";
-import './App.css';
-import {getPath} from './navigation/Navigate';
+import './RenderMap.css';
+import {getPath} from '../../../navigation/Navigate';
 import DeckGL from '@deck.gl/react';
 import {StaticMap} from 'react-map-gl';
 import {PathLayer} from '@deck.gl/layers';
+import { render } from '@testing-library/react';
 
-// Components
-import Searchbar from './components/searchbar/Searchbar';
+function RenderMap() {
 
-function App() {
 	const [viewport, setViewport] = useState({
 		latitude: 42.391484,
 		longitude: -72.529089,
@@ -17,8 +16,9 @@ function App() {
 		width: "100vw",
 		height: "100vh",		
 	});
+
 	var [path, setPath] = useState([]);
-	
+
 	var startPosition = "";
 	var endPosition = "";
 	var weight = 0;
@@ -39,10 +39,10 @@ function App() {
 		if(startPosition && endPosition){
 			setPath(getPath(startPosition, endPosition, weight));
 		}		
-	}	
-		
+	};
+
 	return (
-		<div>			
+		<div className="RenderMap">			
 			
 			<DeckGL
 				initialViewState={viewport}
@@ -58,7 +58,6 @@ function App() {
 			</DeckGL>
 			
 			<div style={{position: "absolute", top: "0px", left: "0px"}}>
-			<Searchbar />
 			<form>				
 				Start Position:
 				<input type="text" name="startPosition"
@@ -86,4 +85,4 @@ function App() {
 	);
 }
 
-export default App;
+export default RenderMap;

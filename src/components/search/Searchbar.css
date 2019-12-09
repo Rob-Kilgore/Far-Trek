@@ -1,8 +1,8 @@
-.searchbar img {
+img.searchbar {
     height: 55px;
 }
   
-.searchbar form {
+form.searchbar {
     display:flex;
     flex-direction:row;
     border: none;
@@ -10,7 +10,7 @@
     width: 525px;
 }
 
-.searchbar input {
+input.searchbar {
     flex-grow:2;
     border:none;
     font-size: 24px;
@@ -19,11 +19,11 @@
     padding: 10px;
 }
 
-.searchbar input:focus {
+input:focus.searchbar {
     outline: none;
 }
 
-.searchbar button {
+button.searchbar {
     border: none;
     background-color: #00A2FF;
 }
