@@ -96,7 +96,6 @@ function create_nodes(file, callback){
     try{ 
       findElevation(input, (response) => {
         //process that set (on call of create nodes)
-        console.log('made it this far 1');
       callback(response)
       });
       }
@@ -168,8 +167,6 @@ create_nodes(parsedFile, (response) => {
   fs.writeFile("nodes_output.json", JSON.stringify(finalArray), 'utf8', function (err) {
     if (err) {
       console.log("An error occured while writing JSON Object to File.");
-    }else{
-      console.log('file saved!')
     }
   });
   })
