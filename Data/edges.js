@@ -10,53 +10,81 @@ let xml = fs.readFileSync('NorthAmherst.osm');
 //Uses a npm module and parses the xml file to JSON object and
 //stores the local variable into the variable "parsedFile"
 let parsedFile;
+let listOfHighways;
 parseString(xml, function (err, result) {
-    parsedFile = result.osm;
+    parsedFile = result['osm'];
+    let wayIndexes = [];
+
+      for (let i = 0; i < parsedFile['way'].length; i++) {
+          if (typeof parsedFile['way'][i]['tag'] == 'undefined'){
+              continue;
+          }
+          for (let j = 0; j < parsedFile['way'][i]['tag'].length; j++) {
+              if (parsedFile['way'][i]['tag'][j]['$']['k'] == 'highway') {
+                  wayIndexes.push(i);
+                  break;
+              }
+          }
+     }
+
+
+      listOfHighways = wayIndexes;
+
+
 });
 
-//Will be an array that contains all the ways, ways are represented as arrays
+
 
 let wayList = {}
 
 
-for (let i = 0; i < parsedFile.way.length; i++) {
-    //Creates a list of edges for each way in the parsedFile variable
-    let edgeList = createEdgeList(parsedFile.way[i]);
+for (let i = 0; i < listOfHighways.length; i++) {
+
+    //Creates a list of edges for each highway in the parsedFile variable
+    let nextHighwayIndex = listOfHighways[i];
+    let wayID = parseInt(parsedFile['way'][nextHighwayIndex]['$']['id']);
+    let edgeList = createEdgeList(parsedFile['way'][nextHighwayIndex]);
+
+
 
     // WayList are arrays of arrays
     // Each element/array in the wayList array represents 1 way
     // And each array/way contains all the edges for that 1 way
     // wayList[i] = edgeList;
 
-    wayList["way " + i.toString()] = edgeList
+
+
+    wayList["way " + wayID] = edgeList
 }
 
 
 function createEdgeList(way) {
-    let nodeList = way.nd;
+    let nodeList = way['nd'];
 
     // let edgeList = new Array(nodeList.length-1)
 
     let edgeList = [];
 
     for (let i = 0; i < nodeList.length - 1; i++) {
-        let id1 = nodeList[i].$.ref;
-        let id2 = nodeList[i + 1].$.ref;
+        let id1 = nodeList[i]['$']['ref'];
+        let id2 = nodeList[i + 1]['$']['ref'];
 
-        let edge = {"edge ID": id1 + id2, "id1": id1, "id2": id2,}
+        let edge = {"edge ID": parseInt(id1 + id2), "id1": parseInt(id1), "id2": parseInt(id2)}
 
         edgeList[i] = edge
 
-        //edgeList["edge " + i.toString()] = edge;
     }
     return edgeList
 }
 
 
-//Stores the wayList which contains objects and thus cannot be stored in its original format as a JSON file
-// fs.writeFileSync('./data.json', JSON.stringify(wayList), 'utf-8');
 
-fs.writeFileSync('./data.json', JSON.stringify(wayList), 'utf-8');
+
+
+//Stores the wayList which contains objects and thus cannot be stored in its original format as a JSON file
+ //fs.writeFileSync('./data.json', JSON.stringify(wayList), 'utf-8');
+//
+fs.writeFileSync('./data.json', JSON.stringify(wayList,null,2), 'utf-8');
 
 
 
