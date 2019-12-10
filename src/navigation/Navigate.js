@@ -12,14 +12,16 @@ module.exports = {
 			inputs[0] = parseFloat(inputs[0]);
 			inputs[1] = parseFloat(inputs[1]);
 			return {lat:inputs[0], lon:inputs[1]};
+
 		};
 				
+
 		startPosition = parsePosition(startPosition);
 		endPosition = parsePosition(endPosition);
 		weight = parseFloat(weight);
 		
 		console.log(startPosition, endPosition, weight);
-				
+
 		var node = pathAlgorithm.getPath(graphJSON, startPosition, endPosition, 0);
 		console.log("path is ");
 		for(let i = 0; i < node.path.length; i++){

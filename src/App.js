@@ -219887,9 +219887,9 @@ function App() {
 	var updatePathLayer = function(){
 		if(startPosition && endPosition){
 			var coordinatePath = [];
-			
+
 			let nodePath = getPath(graphJSON, startPosition, endPosition, weight);
-			
+
 			nodePath.forEach(node => {
 				coordinatePath.push([node.lon, node.lat])
 			});
@@ -219918,6 +219918,7 @@ function App() {
 			</DeckGL>
 			
 			<div style={{position: "absolute", top: "0px", left: "0px"}}>
+			<Searchbar />
 			<form>				
 				Start Position:
 				<input type="text" name="startPosition"
