@@ -10,12 +10,14 @@ module.exports = {
         for(var i = 0; i < graphJSON.edges.length; i++) {
             var a = graph.find(function(el) { return el.uuid === graphJSON.edges[i].a });
             var b = graph.find(function(el) { return el.uuid === graphJSON.edges[i].b });
-            if(!a.neighbors.includes(b)) {
-                a.neighbors.push(b);
-            }
-            if(!b.neighbors.includes(a)) {
-                b.neighbors.push(a);
-            }
+            if(a && b){
+				if(!a.neighbors.includes(b)) {
+					a.neighbors.push(b);
+				}
+				if(!b.neighbors.includes(a)) {
+					b.neighbors.push(a);
+				}
+			}
         }
         return graph;
     }
