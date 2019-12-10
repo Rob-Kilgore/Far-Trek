@@ -219918,7 +219918,7 @@ function App() {
 			</DeckGL>
 			
 			<div style={{position: "absolute", top: "0px", left: "0px"}}>
-			<Searchbar />
+
 			<form>				
 				Start Position:
 				<input type="text" name="startPosition"
