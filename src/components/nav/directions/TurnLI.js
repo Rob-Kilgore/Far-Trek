@@ -4,6 +4,7 @@ class TurnLI extends React.Component {
   render() {
     return(
       <div className="TurnLI">
+        <span>1. Turn Left</span>
       </div>
     );
   }

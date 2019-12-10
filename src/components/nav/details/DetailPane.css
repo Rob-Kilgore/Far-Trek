@@ -1,0 +1,15 @@
+.pane {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    left: 0px;
+    top: 370px;
+    width: 450px;
+    height: 400px;
+    background: white;
+    z-index: 2;
+}
+
+br {
+    border: 2px solid black;
+}
