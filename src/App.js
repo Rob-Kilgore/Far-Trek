@@ -9,9 +9,6 @@ import {PathLayer} from '@deck.gl/layers';
 
 function App() {	
 
-// Components
-import Searchbar from './components/searchbar/Searchbar';
-
 	const [viewport, setViewport] = useState({
 		latitude: 42.391484,
 		longitude: -72.529089,
@@ -69,7 +66,6 @@ import Searchbar from './components/searchbar/Searchbar';
 			</DeckGL>
 			
 			<div style={{position: "absolute", top: "0px", left: "0px"}}>
-			<Searchbar />
 			<form>				
 				Start Position:
 				<input type="text" name="startPosition"
