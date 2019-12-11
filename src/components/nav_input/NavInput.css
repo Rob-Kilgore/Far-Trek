@@ -1,0 +1,42 @@
+.wrapper-box {
+    background-color: #F4F4F4;
+  }
+  
+  img {
+  
+  }
+  
+  form {
+    display:flex;
+    flex-direction:column;
+    border: none;
+    font-size: 24px;
+    width: 525px;
+    content-align: center;
+  }
+    
+  input {
+    flex-grow:2;
+    width: 400px;
+    border-bottom: 3px solid rgb(244,244,244);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 3px solid #F4F4F4;
+    background-color: #F4F4F4;
+    font-size: 24px;
+    color: black;
+    padding: 10px;
+  }
+    
+  input:focus {
+    outline: none;
+  }
+    
+  button {
+    border: none;
+    color: white;
+    background-color: #6230B5;
+    font-size: 1.5em;
+    width: 300px;
+  }

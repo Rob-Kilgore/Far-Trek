@@ -1,0 +1,29 @@
+.searchbar img {
+    height: 55px;
+}
+  
+.searchbar form {
+    display:flex;
+    flex-direction:row;
+    border: none;
+    font-size: 24px;
+    width: 525px;
+}
+
+.searchbar input {
+    flex-grow:2;
+    border:none;
+    font-size: 24px;
+    background-color: black;
+    color: white;
+    padding: 10px;
+}
+
+.searchbar input:focus {
+    outline: none;
+}
+
+.searchbar button {
+    border: none;
+    background-color: #00A2FF;
+}

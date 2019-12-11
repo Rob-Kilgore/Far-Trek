@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="495px" height="50px" viewBox="0 0 495 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61 (89581) - https://sketch.com -->
+    <title>details separator</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Working-set" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-80.000000, -887.000000)" stroke="#979797">
+            <g id="trip-pane-copy" transform="translate(44.000000, 29.000000)">
+                <g id="trip-information" transform="translate(36.000000, 326.000000)">
+                    <g id="trip-details" transform="translate(0.000000, 533.000000)">
+                        <g id="details-separator">
+                            <line x1="0.5" y1="24" x2="494.5" y2="24" id="trip-details-separator" stroke-width="0.5" stroke-linecap="square"></line>
+                            <g id="details-view-expander" transform="translate(436.000000, 0.000000)">
+                                <circle id="Oval" fill="#FFFFFF" cx="24" cy="24" r="24"></circle>
+                                <path d="M12.5,28.5 L23.5,18.5 M35,29 L24,19" id="Combined-Shape" stroke-width="2" stroke-linecap="square"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
